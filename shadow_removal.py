@@ -8,16 +8,8 @@ def shadowRem(imflash, imambient):
     linflash = 0.299*imflash[:,:,0] + 0.587*imflash[:,:,1] + 0.114*imflash[:,:,2]
     linambient = 0.299*imambient[:,:,0] + 0.587*imambient[:,:,1] + 0.114*imambient[:,:,2]
     mask = linflash - linambient
+    
     flag = np.zeros((mask.shape), np.uint8)
-    mask = mask.astype('uint8')
-    hist = cv2.calcHist(mask,[0],None,[256],[0,256])
-    hist = hist/np.max(mask.shape)
-    k = 10
-    sig = 2
-    x = np.linspace(-(k//2), (k//2), k)
-    kernel = np.exp(-1*(x**2)/(2*(sig**2)))
-    hist = convolve(x, kernel, mode='wrap')
-
     thr1 = -0.05
     thr2 = -0.2 
     flag[(mask > thr2) & (mask < thr1)] = 1
@@ -28,11 +20,11 @@ def shadowRem(imflash, imambient):
     se1 = disk(2)
     se2 = disk(6)
     se3 = disk(4)
-    flag = cv2.erode(flag, se1)
+    flag = cv2.erode(flag, se1, iterations = 1)
     maskff = np.zeros((flag.shape[0]+2, flag.shape[1]+2), np.uint8)
     cv2.floodFill(flag, maskff, (0,0), 1)
-    maskff = cv2.dilate(maskff, se2)
-    maskff = cv2.erode(maskff, se3)
+    maskff = cv2.dilate(maskff, se2,  iterations = 1)
+    maskff = cv2.erode(maskff, se3, iterations = 1)
     maskff = maskff.astype('double')
     k = 3
     sig = 3

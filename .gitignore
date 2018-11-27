@@ -118,6 +118,8 @@ dmypy.json
 
 #directory
 dataset
+m_dataset
 
 #special notebooks
 Untitled.ipynb
+shadow_removal.py
