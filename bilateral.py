@@ -8,9 +8,10 @@ def gauss_ker(k, sig):
     return kernel
 
 def bilateral(imflash, imambient):
-    sigmag = 5
+    sigmag = 1
     ws = 11
-    sigmab1 = (np.max(imambient) - np.min(imambient))*(255/10)
+#     sigmab1 = (np.max(imambient) - np.min(imambient))*(255/10)
+    sigmab1 = 1
     gauss_mask = gauss_ker(ws, sigmag)
     
     bias = (ws//2)

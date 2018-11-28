@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-def whiteBal(imambient, imflash, opt):
+def whiteBal(imambient, imflash, opt, alpha):
     if opt == 1:
         scaling = np.array([255/246, 255/169, 255/87])
         imambient[:,:,0] = imambient[:,:,0]*scaling[0]
@@ -72,7 +72,7 @@ def whiteBal(imambient, imflash, opt):
         Cgmean = Cgmean/mg
         Cbmean = Cbmean/mb
 
-        wb = np.dstack([imambientr/Crmean, imambientg/Cgmean, imambientb/Cbmean])
+        wb = np.dstack([(imambientr/Crmean)*alpha, (imambientg/Cgmean)*alpha, (imambientb/Cbmean)*alpha])
         wb[wb>1] = 1
         
     return wb
